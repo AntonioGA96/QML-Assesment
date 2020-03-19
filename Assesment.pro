@@ -15,8 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         controller.cpp \
-        singleton.cpp \
-        window_1.cpp
+        main.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,5 +31,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    controller.h \
-    singleton.h
+    controller.h

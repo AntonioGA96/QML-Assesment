@@ -1,3 +1,4 @@
+#include <QTimer>
 #include "controller.h"
 
 Controller::Controller(QObject *parent) :
@@ -45,3 +46,25 @@ void Controller::setMaxValue(const int &maxValue)
     m_maxValue = maxValue;
     emit maxValueChanged();
 }
+
+void Controller::startProgress()
+{
+    m_timer = new QTimer(this);
+    // Use connect and lambdas
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(myTimerSlot()));
+    //connect(m_timer,)
+    m_timer->start(1000);
+}
+
+void Controller::stopProgress()
+{
+    m_timer->stop();
+}
+
+void Controller::myTimerSlot()
+{
+    qDebug() << "Timer...";
+    m_currentValue += 1;
+    emit currentValue();
+}
+

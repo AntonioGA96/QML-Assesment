@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QTimer>
+#include <QDebug>
 
 class Controller : public QObject
 {
@@ -12,6 +14,7 @@ class Controller : public QObject
     Q_PROPERTY(int maxValue READ maxValue WRITE setMaxValue NOTIFY maxValueChanged)
 
 public:
+    QTimer *m_timer;
     explicit Controller(QObject *parent = nullptr);
 
     QString myVar();
@@ -27,6 +30,12 @@ signals:
     void myVarChanged();
     void currentValueChanged();
     void maxValueChanged();
+
+
+public slots:
+    void startProgress();
+    void stopProgress();
+    void myTimerSlot();
 
 private:
     QString m_myVar;
