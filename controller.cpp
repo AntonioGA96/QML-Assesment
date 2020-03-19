@@ -62,8 +62,9 @@ void Controller::stopProgress()
     qDebug() << "Timer has stopped";
     // Fill the rest of the ProgressBar in 3 seconds (3000 ms)
     int step = 3000 / (m_maxValue - m_currentValue);
+    m_timer->start(step);
 
-    qDebug() << "Rest of time " << step;
+    qDebug() << "Time per remaining second " << step;
 }
 
 void Controller::myTimerSlot()

@@ -4,17 +4,19 @@ import QtQuick.Controls 2.12
 import io.qt.controller 1.0
 
 Window {
-    id: window
+    id: progressBar
     visible: true
     width: 320
     height: 240
-    title: qsTr("Progress Bar")
+    x: (Screen.desktopAvailableWidth - width) / 2 - width/2
+    y: (Screen.desktopAvailableHeight - height) / 2
+    title: qsTr("progressBar")
     color: "lightblue"
 
     Controller {
         id: controller
         Component.onCompleted: {
-            controller.currentValue = 0
+            controller.currentValue = 50
             controller.maxValue = 10
         }
     }
