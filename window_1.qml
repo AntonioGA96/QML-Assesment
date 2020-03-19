@@ -6,59 +6,61 @@ import io.qt.controller 1.0
 Window {
     id: window
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Slider")
+    width: 320
+    height: 240
+    title: qsTr("Progress Bar")
+    color: "lightblue"
 
-    //Crear Widget Progressbar en QML.
-    Rectangle {
-        id: background
-        width: parent.width
-        height: parent.height
-        color: "lightgray"
+    Controller {
+        id: controller
+        Component.onCompleted: {
+            controller.currentValue = 0
+            controller.maxValue = 10
+        }
+    }
 
-        Rectangle {
-            id: fill
-            width: 400
-            height: 50
-            color: "gray"
-            anchors.centerIn: parent
+    ProgressBar {
+        id: control
+        from: 0
+        to: 100
+        value: controller.currentValue
+        padding: 2
+        anchors.centerIn: parent
 
-            Controller {
-                id: controller
-            }
-
-            // Add the progress bar
-            ProgressBar {
-                id: bar
-                width: parent.width
-                height: 50
-                from: 0
-                to: controller.maxValue = 255
-                value: controller.currentValue = 127
-
-                onValueChanged: {
-
-                }
-            }
+        background: Rectangle {
+            implicitWidth: 200
+            implicitHeight: 50
+            color: "#e6e6e6"
+            radius: 10
         }
 
-        Item{
-            anchors.fill: parent
-            focus: true
-            Keys.onLeftPressed: {
-//                controller.currentValue -= 1
-//                console.log("Value: ", controller.currentValue);
-//                bar.value = controller.currentValue
-                controller.startProgress()
+        contentItem: Item {
+            implicitWidth: 200
+            implicitHeight: 50
+
+            Rectangle {
+                width: control.visualPosition * parent.width
+                height: parent.height
+                radius: 8
+                color: "#17a81a"
             }
-            Keys.onRightPressed:
-            {
-                controller.stopProgress()
-                /*controller.currentValue += 1
-                console.log("Value: ", controller.currentValue);
-                bar.value = controller.curre*/ntValue
-            }
+        }
+    }
+
+    Item{
+        focus: true
+        Keys.onLeftPressed: {
+            controller.startProgress()
+//            controller.currentValue -= 1
+//            console.log("Value: ", controller.currentValue);
+//            bar.value = controller.currentValue
+        }
+        Keys.onRightPressed:
+        {
+            controller.stopProgress()
+//            controller.currentValue += 1
+//            console.log("Value: ", controller.currentValue);
+//            bar.value = controller.currentValue
         }
     }
 }
