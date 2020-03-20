@@ -1,8 +1,8 @@
-pragma Singleton
+//pragma Singleton
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
-import io.qt.controller 1.0
+//import io.qt.controller 1.0
 
 Window {
     id: inputText
@@ -14,8 +14,18 @@ Window {
     title: qsTr("inputText")
     color: "lightblue"
 
-    Controller {
-        id: controller
+
+
+    Connections {
+        target: Controller
+
+        onCurrentValueChanged: {
+            // Update ProgressBar currentValue
+        }
+
+        onMaxValueChanged: {
+            //
+        }
     }
 
     Rectangle{
@@ -26,13 +36,14 @@ Window {
         radius: 10
 
         TextInput {
+            id: currentValueInput
             text: "10"
             anchors.centerIn: parent
             color: "darkblue"
             cursorVisible: false
 
             onEditingFinished:{
-                console.log(text)
+                Controller.currentValue = currentValueInput.text
             }
         }
     }

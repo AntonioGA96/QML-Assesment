@@ -1,8 +1,10 @@
 #include <QTimer>
+#include <QDebug>
 #include "controller.h"
 
-Controller::Controller(QObject *parent) :
-    QObject(parent)
+Controller::Controller(QObject *parent) : QObject(parent),
+    m_currentValue(0),
+    m_maxValue(100)
 {
 }
 
@@ -31,7 +33,7 @@ void Controller::setCurrentValue(const int &currentValue)
         return;
 
     m_currentValue = currentValue;
-    emit currentValueChanged();
+    emit currentValueChanged(m_currentValue);
 }
 int Controller::maxValue()
 {
@@ -50,21 +52,32 @@ void Controller::setMaxValue(const int &maxValue)
 void Controller::startProgress()
 {
     m_timer = new QTimer(this);
-    // Use connect and lambdas
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(myTimerSlot()));
-    //connect(m_timer,)
+    connect(m_timer, &QTimer::timeout,[=](){
+        if(m_currentValue < m_maxValue){
+            ++m_currentValue;
+            emit currentValueChanged(m_currentValue);
+        }
+    });
     m_timer->start(1000);
 }
+
+//void Controller::startProgress(const QColor &color)
+//{
+
+//}
 
 void Controller::stopProgress()
 {
     m_timer->stop();
-    qDebug() << "Timer has stopped";
     // Fill the rest of the ProgressBar in 3 seconds (3000 ms)
     int step = 3000 / (m_maxValue - m_currentValue);
+    connect(m_timer, &QTimer::timeout,[=](){
+        if(m_currentValue < m_maxValue){
+            ++m_currentValue;
+            emit currentValueChanged(m_currentValue);
+        }
+    });
     m_timer->start(step);
-
-    qDebug() << "Time per remaining second " << step;
 }
 
 void Controller::myTimerSlot()

@@ -1,7 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
-import io.qt.controller 1.0
 
 Window {
     id: progressBar
@@ -13,19 +12,19 @@ Window {
     title: qsTr("progressBar")
     color: "lightblue"
 
-    Controller {
-        id: controller
-        Component.onCompleted: {
-            controller.currentValue = 50
-            controller.maxValue = 10
+    Connections {
+        target: Controller
+
+        onCurrentValueChanged: {
+            control.value = currentValue
         }
     }
 
     ProgressBar {
         id: control
         from: 0
-        to: 100
-        value: controller.currentValue
+        to: Controller.maxValue
+        value: Controller.currentValue
         padding: 2
         anchors.centerIn: parent
 
@@ -52,17 +51,11 @@ Window {
     Item{
         focus: true
         Keys.onLeftPressed: {
-            controller.startProgress()
-//            controller.currentValue -= 1
-//            console.log("Value: ", controller.currentValue);
-//            bar.value = controller.currentValue
+            Controller.startProgress()
         }
         Keys.onRightPressed:
         {
-            controller.stopProgress()
-//            controller.currentValue += 1
-//            console.log("Value: ", controller.currentValue);
-//            bar.value = controller.currentValue
+            Controller.stopProgress()
         }
     }
 }
